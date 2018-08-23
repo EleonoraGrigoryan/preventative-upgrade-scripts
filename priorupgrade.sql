@@ -1,3 +1,5 @@
+-- Prior to Upgrade
+
 -- disable all startup sprocs
 
 declare cr_startup cursor
