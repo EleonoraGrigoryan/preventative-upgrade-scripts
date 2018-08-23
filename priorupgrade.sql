@@ -16,6 +16,7 @@ end
 close cr_startup
 deallocate cr_startup
 
+
 -- disable all enabled trace flag functionalities
 
 if object_id('tempdb..#tb1', 'U') is not null 
@@ -41,3 +42,45 @@ end
 close cr_traceflagsoff
 deallocate cr_traceflagsoff
 -- dbcc tracestatus()
+
+
+-- Set autogrowth of 30% for all files(data and log) of all databases including system ones
+
+declare cr_dbnames cursor
+for 
+select name from sys.databases 
+
+open cr_dbnames
+declare @dbname sysname
+fetch next from cr_dbnames into @dbname
+while @@fetch_status = 0
+begin
+	declare cr_files cursor
+	for
+	
+	select mf.[name] from sys.master_files mf
+	inner join sys.databases d  on  mf.database_id = d.database_id
+	where d.[name] = @dbname
+
+	open cr_files
+	declare @dynamicfn nvarchar(150)
+	declare @filename nvarchar(50)
+	fetch next from cr_files into @filename
+	while @@fetch_status = 0
+	begin
+		set @dynamicfn = 'ALTER DATABASE ' + @dbname + ' MODIFY FILE ( NAME ='''+ @filename + ''', FILEGROWTH = 30% )'
+		print @dynamicfn
+		exec(@dynamicfn)
+	
+		fetch next from cr_files into @filename
+	end
+	close cr_files
+	deallocate cr_files
+
+	------------
+	fetch next from cr_dbnames into @dbname
+end
+close cr_dbnames
+deallocate cr_dbnames
+
+
