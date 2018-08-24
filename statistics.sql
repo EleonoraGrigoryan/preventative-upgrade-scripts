@@ -1,5 +1,10 @@
 -- Update/ Create Statistics
 
+-- Update statistics for all user and system tables in a specified db 
+use [dbname];  
+go  
+exec sp_updatestats; 
+
 -- Update statistics automatically
 alter database [dbname]
 set auto_update_statistics ON (OFF)
