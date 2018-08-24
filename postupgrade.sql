@@ -14,6 +14,7 @@ begin
   set @dynamic = 'use '+ @dbname + char(13) + 'exec sp_updatestats'
   print @dynamic
   exec( @dynamic)
+  
   fetch next from cr_dbnames into @dbname
 end
 
