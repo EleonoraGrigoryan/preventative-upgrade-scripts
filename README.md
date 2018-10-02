@@ -6,3 +6,6 @@ Scripts to run in MS SQL Server prior to and after the upgrade process in order 
 - [x] Setting data and log file autogrowth during the update process (before)
 - [x] Running statistics update against user-defined and internal tables in all databases (after)
 
+----
+MIT License <br>
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND
